@@ -5,6 +5,10 @@ use Illuminate\Support\ServiceProvider;
 
 return [
 
+    'quote' => [
+        'count' => env('QUOTE_COUNT')
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

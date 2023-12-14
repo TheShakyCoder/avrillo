@@ -1,3 +1,29 @@
+# Avrillo Conveyancing Technical Test
+
+## TL;DR
+There wasn't enough information provided to safely assume exactly what was required due to the random nature of the kanye.rest API.
+
+Therefore what I have done is my interpretation of the specification.
+
+## Assumptions
+
+I have not built the front end register/login views as these are very easily provided by the Laravel packages (eg. Breeze) and I gather it's assumed I know  how to build such pages (especially ass packages were not to be used).
+
+The biggest assumption was working out how to create order from chaos. As the kanye site only provided 1 random result, it can never be known if we have all the quotes (assuming we can't see their source code).
+
+## Installation
+
+Expand the zip file
+
+`cd avrillo`
+
+I created this within a Docker environment so at this point you would do something like 
+
+`sail up -d --build`
+
+`composer install`
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">

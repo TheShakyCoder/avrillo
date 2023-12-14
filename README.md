@@ -21,6 +21,10 @@ Expand the zip file
 
 `composer install` or `sail composer install` in Docker
 
+`npm install`
+
+`npm run build`
+
 I created this within a Docker environment so I would do something like
 
 `sail up -d --build`
@@ -42,6 +46,9 @@ and pointed `avrillo.test` to `127.0.0.1` in my `/etc/hosts` file but you could 
 I have very little experience of this so I decided to do Service/Provider instead
 
 ## Tests
+
+`sail pest`
+
 I am not convinced Unit Tests are that import on request/response frameworks such as the traditional web. IMO mocking is over-rated.
 
 Feature tests use Pest and check for authentication

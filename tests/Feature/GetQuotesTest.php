@@ -5,7 +5,7 @@ use Illuminate\Support\Str;
 
 test('i can get 5 quotes', function () {
     //  GIVEN
-    $count = 5;
+    $count = config('app.quote.count');
     $user = User::factory()->create();
     $token = $user->createToken(Str::random(10));
     $plainTextToken = $token->plainTextToken;

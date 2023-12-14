@@ -34,14 +34,17 @@ Route::post('/register', function (Request $request) {
         ]);
     } catch(Exception $e) {
         return response()->json([
-            'message' => 'there was a problem with your registration details'
+            'message' => $e->getMessage()
         ], 401);
     }
 
+    $token = $user->createToken(Str::random(10));
+
     return response()->json([
-        'message' => 'Success!'
+        'message' => 'Success!',
+        'token' => $token->plainTextToken
     ], 201);
-});
+})->name('register');
 
 Route::post('/login', function (Request $request) {
     $credentials = $request->validate([
@@ -62,7 +65,7 @@ Route::post('/login', function (Request $request) {
         'user' => $request->user(),
         'token' => $token->plainTextToken
     ]);
-});
+})->name('login');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

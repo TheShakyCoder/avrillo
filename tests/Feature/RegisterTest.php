@@ -11,4 +11,5 @@ test('a user can register', function () {
 
     //  THEN
     $response->assertStatus(201);
+    $response->assertJsonStructure(['token']);
 });

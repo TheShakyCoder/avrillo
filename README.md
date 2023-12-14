@@ -1,15 +1,17 @@
 # Avrillo Conveyancing Technical Test
 
 ## TL;DR
-There wasn't enough information provided to safely assume exactly what was required due to the random nature of the kanye.rest API.
+There wasn't enough information provided to safely assume exactly what was 
+required due to the random nature of the `kanye.rest` API.
 
-Therefore what I have done is my interpretation of the specification.
+Therefore, what I have done is my interpretation of the specification.
 
 ## Assumptions
 
-I have not built the front end register/login views as these are very easily provided by the Laravel packages (eg. Breeze) and I gather it's assumed I know  how to build such pages (especially ass packages were not to be used).
-
-The biggest assumption was working out how to create order from chaos. As the kanye site only provided 1 random result, it can never be known if we have all the quotes (assuming we can't see their source code).
+The biggest assumption was working out how to create order from chaos. 
+As the kanye site only provided 1 random result, 
+it can never be known if we have all the quotes (assuming we can't see their source code). 
+So trying to provide a paginated result will never be perfect.
 
 ## Installation
 
@@ -17,76 +19,29 @@ Expand the zip file
 
 `cd avrillo`
 
-I created this within a Docker environment so at this point you would do something like 
+`composer install` or `sail composer install` in Docker
+
+I created this within a Docker environment so I would do something like
 
 `sail up -d --build`
 
-`composer install`
+and pointed `avrillo.test` to `127.0.0.1` in my `/etc/hosts` file but you could use `localhost`. Just be sure to amend the .wnv file accordingly.
 
+`sail artisan migrate:fresh`
 
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Usage
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+* go to localhost (or whatever is being used)
+* register a user. This will return a token that is stored in localStorage
+* fetch quotes
+* fetch more quotes (although the quotes are cached, a single called is made to `kanye.rest` on each request to try and populate the local cache with more unique quotes)
+* logout (removes the token)
+* login (generates a new token)
 
-## About Laravel
+## Manager Pattern
+I have very little experience of this so I decided to do Service/Provider instead
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tests
+I am not convinced Unit Tests are that import on request/response frameworks such as the traditional web. IMO mocking is over-rated.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Feature tests use Pest and check for authentication

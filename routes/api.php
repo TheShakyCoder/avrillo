@@ -3,8 +3,10 @@
 use App\Http\Controllers\QuoteController;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,8 +43,29 @@ Route::post('/register', function (Request $request) {
     ], 201);
 });
 
+Route::post('/login', function (Request $request) {
+    $credentials = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required'],
+    ]);
+
+    if (!Auth::attempt($credentials)) {
+        return response()->json([
+            'message' => 'there was a problem with your email and/or password'
+        ], 403);
+    }
+
+    $token = $request->user()->createToken(Str::random(10));
+
+    return response()->json([
+        'message' => 'Success!',
+        'user' => $request->user(),
+        'token' => $token->plainTextToken
+    ]);
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('token')->get('/quotes', [QuoteController::class, 'index']);
+Route::middleware('auth:sanctum')->get('/quotes', [QuoteController::class, 'index']);

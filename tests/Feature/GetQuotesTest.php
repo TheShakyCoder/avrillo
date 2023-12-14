@@ -1,12 +1,18 @@
 <?php
 
+use App\Models\User;
+use Illuminate\Support\Str;
+
 test('i can get 5 quotes', function () {
     //  GIVEN
     $count = 5;
+    $user = User::factory()->create();
+    $token = $user->createToken(Str::random(10));
+    $plainTextToken = $token->plainTextToken;
 
     //  WHEN
     $response = $this->get('/api/quotes', [
-        'Token' => config('auth.api.token')
+        'Authorization' => 'Bearer '.$plainTextToken
     ]);
 
     //  THEN
@@ -16,11 +22,13 @@ test('i can get 5 quotes', function () {
 
 test('i can get 5 more quotes', function () {
     //  GIVEN
-    $count = 5;
+    $user = User::factory()->create();
+    $token = $user->createToken(Str::random(10));
+    $plainTextToken = $token->plainTextToken;
 
     //  WHEN
     $response = $this->get('/api/quotes', [
-        'Token' => config('auth.api.token')
+        'Authorization' => 'Bearer '.$plainTextToken
     ]);
     $response->assertStatus(200);
 
@@ -29,7 +37,7 @@ test('i can get 5 more quotes', function () {
     }
 
     $response2 = $this->get('/api/quotes?page=2', [
-        'Token' => config('auth.api.token')
+        'Authorization' => 'Bearer '.$plainTextToken
     ]);
 
     //  THEN
@@ -39,11 +47,11 @@ test('i can get 5 more quotes', function () {
 
 test('i cannot get 5 quotes', function () {
     //  GIVEN
-    $count = 5;
 
     //  WHEN
     $response = $this->get('/api/quotes', [
-        'Token' => 'scammer'
+        'Authorization' => 'Bearer scammer',
+        'Accept' => 'application/json'
     ]);
 
     //  THEN

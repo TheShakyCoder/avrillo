@@ -15,7 +15,7 @@ So trying to provide a paginated result will never be perfect.
 
 ## Installation
 
-Expand the zip file
+Download and expand the zip file or `git clone git@github.com:TheShakyCoder/avrillo.git`
 
 `cd avrillo`
 
